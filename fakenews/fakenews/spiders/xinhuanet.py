@@ -10,14 +10,14 @@ class XinhuanetSpider(scrapy.Spider):
 	start_urls = ['http://www.xinhuanet.com/']
 
 	rules = (
-		Rule(LinkExtractor(allow=r"/food/*"),#Regular expression检验字符串
+		Rule(LinkExtractor(allow=r"/food/2017-05/08/"),#Regular expression检验字符串
 			callback="parse_fakenews",
 			follow=True),#是否继续
 		)
 	#callback 
 	def parse_fakenews(self,response):
 		item = FakenewsItem()
-		item['news_thread'] = response.url.strip().split('/')[-1][:-5]
+		item['news_thread'] = response.url.strip().split('/')[-1][:-4]
 		#delete blank
 		self.get_title(response,item)
 #		self.get_keywords(response,item)
@@ -31,8 +31,8 @@ class XinhuanetSpider(scrapy.Spider):
 		title = response.css('title::text').extract()
 		print('*'*20)
 		if title:#list is not empty
-			print('title:{}'.format(title[0][:-5]))
-			item['news_title'] = title[0][:-5]
+			print('title:{}'.format(title[0][:-4]))
+			item['news_title'] = title[0][:-4]
 
 #	def get_keywords(self,response,item):
 #		keywords = response.css()
@@ -40,8 +40,8 @@ class XinhuanetSpider(scrapy.Spider):
 	def get_time(self,response,item):
 		time = response.css('.h-time::text').extract()
 		if time:
-			print('time:{}'.format(time[0][:-5]))
-			item['news_time'] = time[0][:-5]
+			print('time:{}'.format(time[0][:-4]))
+			item['news_time'] = time[0][:-4]
 
 	def get_source(self,response,item):
 		source = response.css('#source::text').extract()
