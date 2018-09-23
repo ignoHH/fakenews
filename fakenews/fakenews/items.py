@@ -16,6 +16,5 @@ class FakenewsItem(scrapy.Item):
 	news_url = scrapy.Field()
 	news_time = scrapy.Field()
 	news_source = scrapy.Field()
-	source_url = scrapy.Field()
 	news_text = scrapy.Field()
 	#pass
