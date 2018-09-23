@@ -5,18 +5,18 @@ from scrapy.linkextractors import LinkExtractor#链接提取器
 from scrapy.spiders import CrawlSpider,Rule
 #scrapy genspider news163 news.163.com ---genarate spider
 class News163Spider(CrawlSpider):#类继承
-	name = 'news163'
-	allowed_domains = ['news.163.com']
+	name = 'xinhuanet'
+	allowed_domains = ['www.xinhuanet.com']
 	#could add url that we want to spider
-	start_urls = ['http://news.163.com/']
+	start_urls = ['http://www.xinhuanet.com']
 	#<a id="ne_article_source"></a>source url
 	rules = (
-		Rule(LinkExtractor(allow=r"/18/09\d+/*"),#Regular expression检验字符串
-			callback="parse_news",
+		Rule(LinkExtractor(allow=r"/food/*"),#Regular expression检验字符串
+			callback="parse_fakenews",
 			follow=True),#是否继续
 		)
 	#callback 
-	def parse_news(self,response):
+	def parse_fakenews(self,response):
 		item = FakenewsItem()
 		item['news_thread'] = response.url.strip().split('/')[-1][:-5]
 		#delete blank
@@ -36,13 +36,13 @@ class News163Spider(CrawlSpider):#类继承
 			item['news_title'] = title[0][:-5]
 
 	def get_time(self,response,item):
-		time = response.css('.post_time_source::text').extract()
+		time = response.css('.h-time::text').extract()
 		if time:
 			print('time:{}'.format(time[0][:-5]))
 			item['news_time'] = time[0][:-5]
 
 	def get_source(self,response,item):
-		source = response.css('#ne_article_source::text').extract()
+		source = response.css('#source::text').extract()
 		if source:
 			print('source:{}'.format(source[0]))
 			item['news_source'] = source[0]
