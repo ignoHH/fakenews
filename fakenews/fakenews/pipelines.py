@@ -11,7 +11,7 @@ class FakenewsPipeline(object):
 
 	def __init__(self):
 		self.file = open('news_data.csv','wb')
-		self.exporter = CsvItemExporter(self.file,encoding='utf-8')
+		self.exporter = CsvItemExporter(self.file,encoding='gbk')
 		self.exporter.start_exporting()
 
 	def close_spider(self,spider):

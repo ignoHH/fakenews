@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from fakenews.items import FakenewsItem
-from scrapy.linkextractors import LinkExtractor#链接提取器
+from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider,Rule
 
-class XinhuanetSpider(CrawlSpider):
-	name = 'xinhuanet'
-	allowed_domains = ['www.xinhuanet.com']
-	start_urls = ['http://www.xinhuanet.com/']
-
-	rules = (
-		Rule(LinkExtractor(allow=r"/food/*"),#Regular expression检验字符串
+class GuokrSpider(CrawlSpider):
+    name = 'guokr'
+    allowed_domains = ['www.guokr.com']
+    start_urls = ['https://www.guokr.com/']
+    rules = (
+		Rule(LinkExtractor(allow=r"/article/*"),#Regular expression检验字符串
 			callback="parse_fakenews",
 			follow=True),#是否继续
 		)
-	#callback 
-	def parse_fakenews(self,response):
+def parse_fakenews(self,response):
 		item = FakenewsItem()
 		item['news_thread'] = response.url.strip().split('/')[-1][:-4]
 		#delete blank
